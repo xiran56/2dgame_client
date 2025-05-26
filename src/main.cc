@@ -8,19 +8,21 @@
 
 int main() {
     entt::registry reg;
+
     auto e = reg.create();
     
     auto circle = new sf::CircleShape { 50 };
 
     circle->setPosition({ 100, 100 });
     circle->setFillColor(sf::Color::Green);
-
+    
+    reg.emplace<components::render>(e, circle);
+    
     auto rect = new sf::RectangleShape { { 30, 30 } };
 
     rect->setPosition({ 200, 200 });
     rect->setFillColor(sf::Color::Red);
 
-    reg.emplace<components::render>(e, circle);
     auto e2 = reg.create();
     reg.emplace<components::render>(e2, rect);
 
