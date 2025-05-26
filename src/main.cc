@@ -1,20 +1,42 @@
-#include "SFML/Window/Keyboard.hpp"
-#include <SFML/Window.hpp>
-#include <iostream>
+#include <SFML/Graphics/CircleShape.hpp>
 
-int main()
-{
-    sf::Window window(sf::VideoMode({800, 600}), "My window");
+#include "SFML/Graphics/Color.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "components/render.hh"
+#include "systems/render.hh"
+#include <memory>
 
-    while (window.isOpen()) {
-        while (const std::optional event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
+int main() {
+    entt::registry reg;
+    auto e = reg.create();
+    
+    auto circle = new sf::CircleShape { 50 };
+
+    circle->setPosition({ 100, 100 });
+    circle->setFillColor(sf::Color::Green);
+
+    auto rect = new sf::RectangleShape { { 30, 30 } };
+
+    rect->setPosition({ 200, 200 });
+    rect->setFillColor(sf::Color::Red);
+
+    reg.emplace<components::render>(e, circle);
+    auto e2 = reg.create();
+    reg.emplace<components::render>(e2, rect);
+
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "My window");
+
+    // run the program as long as the window is open
+    while (window.isOpen())
+    {
+        // check all the window's events that were triggered since the last iteration of the loop
+        while (const std::optional event = window.pollEvent())
+        {
+            // "close requested" event: we close the window
+            if (event->is<sf::Event::Closed>())
                 window.close();
-            }
-            
-            if (auto key = event->getIf<sf::Event::KeyPressed>(); key != nullptr) {
-                std::cout << sf::Keyboard::getDescription(key->scancode).toAnsiString() << " is pressed\n";
-            }
         }
+
+        systems::render(reg, window);
     }
 }
