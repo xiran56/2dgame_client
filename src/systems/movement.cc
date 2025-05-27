@@ -19,12 +19,12 @@ void systems::move_player(entt::registry &registry, float dt) {
     using sf::Keyboard::Key;
 
     if (isKeyPressed(Key::W)) {
-        position.y += SPEED * dt; 
+        position.y -= SPEED * dt; 
     } else if (isKeyPressed(Key::A)) {
-        position.x += SPEED * dt;
-    } else if (isKeyPressed(Key::S)) {
-        position.y -= SPEED * dt;
-    } else if (isKeyPressed(Key::D)) {
         position.x -= SPEED * dt;
+    } else if (isKeyPressed(Key::S)) {
+        position.y += SPEED * dt;
+    } else if (isKeyPressed(Key::D)) {
+        position.x += SPEED * dt;
     }
 }
