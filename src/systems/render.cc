@@ -1,18 +1,14 @@
-#include "render.hh"
+#include "systems/render.hh"
 
-#include "../components/render.hh"
-#include <stdexcept>
+#include "components/sprite.hh"
+#include "components/position.hh"
 
-void systems::render(entt::registry &registry, sf::RenderWindow &w) {
+void systems::draw_sprites(entt::registry &registry, sf::RenderWindow &w) {
     w.clear();
 
-    auto view = registry.view<components::render>();
-
-    for (auto [entity, render] : view.each()) {
-        if (render == nullptr)
-            throw std::runtime_error { "systems::render: a nullptr render component have been reiceved!" };
-
-        w.draw(*render);
+    for (auto [entity, sprite, position] : registry.view<components::sprite, components::position>().each()) {
+        sprite.setPosition(position);
+        w.draw(sprite);
     }
 
     w.display();

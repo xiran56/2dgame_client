@@ -4,5 +4,5 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace systems {
-    void render(entt::registry &registry, sf::RenderWindow &w);
+    void update_camera(entt::registry &registry, sf::RenderWindow &window);
 }
